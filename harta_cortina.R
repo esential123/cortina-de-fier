@@ -31,6 +31,8 @@ cortina         <- st_read("cortina_final.geojson", quiet = TRUE)
 
 # ---- 4. CULORI PE BLOCURI (sincron cu OpenLayers) ----
 culoare_bloc <- function(bloc) {
+  bloc <- as.character(bloc)
+  if (is.na(bloc)) return("#888888")
   switch(bloc,
     "Estic"     = "#9e2b25",   # rosu sovietic
     "Nealiniat" = "#c97b29",   # portocaliu ars
@@ -40,16 +42,24 @@ culoare_bloc <- function(bloc) {
   )
 }
 
+# eticheta text pentru un bloc
+eticheta_bloc <- function(bloc) {
+  bloc <- as.character(bloc)
+  if (is.na(bloc)) return("")
+  switch(bloc,
+    "Estic"     = "Blocul de Est",
+    "Nealiniat" = "Comunist nealiniat",
+    "Vestic"    = "Vest \u00b7 NATO",
+    "Neutru"    = "Stat neutru",
+    bloc)
+}
+
 # ---- 5. POP-UP-uri (HTML, cu poza + 3 atribute) ----
 # Pozele sunt referentiate relativ (img/...), la fel ca pe GitHub Pages.
 
 # pop-up pentru tari (cu imagine)
 popup_tara <- function(nume, bloc, info, imagine) {
-  eticheta <- switch(bloc,
-    "Estic"     = "Blocul de Est",
-    "Nealiniat" = "Comunist nealiniat",
-    "Vestic"    = "Vest \u00b7 NATO",
-    "Neutru"    = "Stat neutru", bloc)
+  eticheta <- eticheta_bloc(bloc)
   col <- culoare_bloc(bloc)
   img_html <- ""
   if (!is.na(imagine) && nzchar(imagine)) {
@@ -71,11 +81,7 @@ popup_tara <- function(nume, bloc, info, imagine) {
 
 # pop-up pentru capitale (fara imagine)
 popup_capitala <- function(nume, bloc, info) {
-  eticheta <- switch(bloc,
-    "Estic"     = "Blocul de Est",
-    "Nealiniat" = "Comunist nealiniat",
-    "Vestic"    = "Vest \u00b7 NATO",
-    "Neutru"    = "Stat neutru", bloc)
+  eticheta <- eticheta_bloc(bloc)
   col <- culoare_bloc(bloc)
   sprintf(
     "<div style='width:220px;font-family:Georgia,serif;padding:4px 6px;'>
@@ -109,11 +115,29 @@ popup_cortina <- function(nume, perioada, lungime_km, info, imagine) {
 }
 
 # generez vectorii de pop-up pentru fiecare strat
-tari_est$popup        <- mapply(popup_tara, tari_est$nume, tari_est$bloc, tari_est$info, tari_est$imagine)
-tari_nealiniate$popup <- mapply(popup_tara, tari_nealiniate$nume, tari_nealiniate$bloc, tari_nealiniate$info, tari_nealiniate$imagine)
-tari_vest$popup       <- mapply(popup_tara, tari_vest$nume, tari_vest$bloc, tari_vest$info, tari_vest$imagine)
-capitale$popup        <- mapply(popup_capitala, capitale$nume, capitale$bloc, capitale$info)
-cortina$popup         <- popup_cortina(cortina$nume, cortina$perioada, cortina$lungime_km, cortina$info, cortina$imagine)
+# (folosesc vapply ca sa garantez un vector de caractere - evita eroarea cu sf)
+fac_popup_tari <- function(df) {
+  vapply(seq_len(nrow(df)), function(i) {
+    popup_tara(df$nume[i], df$bloc[i], df$info[i], df$imagine[i])
+  }, character(1))
+}
+fac_popup_capitale <- function(df) {
+  vapply(seq_len(nrow(df)), function(i) {
+    popup_capitala(df$nume[i], df$bloc[i], df$info[i])
+  }, character(1))
+}
+
+tari_est$popup        <- fac_popup_tari(tari_est)
+tari_nealiniate$popup <- fac_popup_tari(tari_nealiniate)
+tari_vest$popup       <- fac_popup_tari(tari_vest)
+capitale$popup        <- fac_popup_capitale(capitale)
+cortina$popup         <- popup_cortina(cortina$nume[1], cortina$perioada[1], cortina$lungime_km[1], cortina$info[1], cortina$imagine[1])
+
+# pre-calculez culoarea ca o coloana (evita probleme cu sapply in formule leaflet)
+tari_est$culoare        <- vapply(tari_est$bloc, culoare_bloc, character(1))
+tari_nealiniate$culoare <- vapply(tari_nealiniate$bloc, culoare_bloc, character(1))
+tari_vest$culoare       <- vapply(tari_vest$bloc, culoare_bloc, character(1))
+capitale$culoare        <- vapply(capitale$bloc, culoare_bloc, character(1))
 
 # functii de stil pentru poligoane (culoare dupa bloc)
 stil_poligon <- function(df) {
@@ -131,7 +155,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
   # --- Strat poligoane: VEST + NEUTRU ---
   addPolygons(
     data = tari_vest,
-    fillColor = ~sapply(bloc, culoare_bloc),
+    fillColor = ~culoare,
     fillOpacity = 0.45, color = "#2c4654", weight = 1,
     popup = ~popup, group = "Vest & state neutre",
     highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.7, bringToFront = TRUE)
@@ -140,7 +164,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
   # --- Strat poligoane: COMUNISTE NEALINIATE ---
   addPolygons(
     data = tari_nealiniate,
-    fillColor = ~sapply(bloc, culoare_bloc),
+    fillColor = ~culoare,
     fillOpacity = 0.5, color = "#9c5d1f", weight = 1,
     popup = ~popup, group = "Comuniste nealiniate",
     highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.78, bringToFront = TRUE)
@@ -149,7 +173,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
   # --- Strat poligoane: BLOCUL DE EST ---
   addPolygons(
     data = tari_est,
-    fillColor = ~sapply(bloc, culoare_bloc),
+    fillColor = ~culoare,
     fillOpacity = 0.55, color = "#7a201c", weight = 1,
     popup = ~popup, group = "Blocul de Est",
     highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.8, bringToFront = TRUE)
@@ -168,7 +192,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
   # --- Strat puncte: CAPITALE ---
   addCircleMarkers(
     data = capitale,
-    radius = 5, fillColor = ~sapply(bloc, culoare_bloc), fillOpacity = 1,
+    radius = 5, fillColor = ~culoare, fillOpacity = 1,
     color = "#e9e0c9", weight = 1.6,
     label = ~nume,
     labelOptions = labelOptions(
