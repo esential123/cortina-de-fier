@@ -1,7 +1,6 @@
 # ============================================================
 #  CORTINA DE FIER - harta interactiva in R (Leaflet)
 #  Proiect LPSIG - punctul 2
-#  Reproduce harta OpenLayers de la punctul 1
 # ============================================================
 
 # ---- 1. PACHETE (se instaleaza automat daca lipsesc) ----
@@ -19,8 +18,6 @@ library(htmltools)
 # ---- 2. SETARE FOLDER DE LUCRU ----
 # Scriptul presupune ca cele 5 fisiere .geojson sunt in ACELASI folder cu scriptul.
 # In RStudio: Session -> Set Working Directory -> To Source File Location
-# (sau decomenteaza linia urmatoare si pune calea ta)
-# setwd("C:/Users/bancu/Desktop/cortina-de-fier")
 
 # ---- 3. CITIRE DATE ----
 tari_est        <- st_read("tari_est.json", quiet = TRUE)
@@ -299,5 +296,5 @@ print(harta)  # arata harta in RStudio (Viewer)
 saveWidget(harta, "index.html", selfcontained = FALSE,
            title = "Cortina de Fier - Europa divizata (1945-1991)")
 
-cat("\n\nGata! S-a generat 'index.html' in folderul de lucru.\n")
-cat("Urca-l pe GitHub (in repo-ul cortina-de-fier) impreuna cu folderul img/.\n")
+cat("\n\nMultumesc ca ați citit până aici\n")
+
