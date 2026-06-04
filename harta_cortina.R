@@ -23,22 +23,22 @@ library(htmltools)
 # setwd("C:/Users/bancu/Desktop/cortina-de-fier")
 
 # ---- 3. CITIRE DATE ----
-tari_est        <- st_read("Tari_Cortina_de_fier_final.geojson", quiet = TRUE)
-tari_nealiniate <- st_read("comuniste_nealiniate_final.geojson", quiet = TRUE)
-tari_vest       <- st_read("Tari_nealiniate_final.geojson", quiet = TRUE)
-capitale        <- st_read("capitale_final.geojson", quiet = TRUE)
-cortina         <- st_read("cortina_final.geojson", quiet = TRUE)
+tari_est        <- st_read("tari_est.json", quiet = TRUE)
+tari_nealiniate <- st_read("tari_nealiniate.json", quiet = TRUE)
+tari_vest       <- st_read("tari_vest.json", quiet = TRUE)
+capitale        <- st_read("capitale.json", quiet = TRUE)
+cortina         <- st_read("cortina.json", quiet = TRUE)
 
 # ---- 4. CULORI PE BLOCURI (sincron cu OpenLayers) ----
 culoare_bloc <- function(bloc) {
   bloc <- as.character(bloc)
   if (is.na(bloc)) return("#888888")
   switch(bloc,
-    "Estic"     = "#9e2b25",   # rosu sovietic
-    "Nealiniat" = "#c97b29",   # portocaliu ars
-    "Vestic"    = "#3a5a6e",   # albastru-gri NATO
-    "Neutru"    = "#6b7a5a",   # verde-oliv
-    "#888888"
+         "Estic"     = "#9e2b25",   # rosu sovietic
+         "Nealiniat" = "#c97b29",   # portocaliu ars
+         "Vestic"    = "#3a5a6e",   # albastru-gri NATO
+         "Neutru"    = "#6b7a5a",   # verde-oliv
+         "#888888"
   )
 }
 
@@ -47,26 +47,35 @@ eticheta_bloc <- function(bloc) {
   bloc <- as.character(bloc)
   if (is.na(bloc)) return("")
   switch(bloc,
-    "Estic"     = "Blocul de Est",
-    "Nealiniat" = "Comunist nealiniat",
-    "Vestic"    = "Vest \u00b7 NATO",
-    "Neutru"    = "Stat neutru",
-    bloc)
+         "Estic"     = "Blocul de Est",
+         "Nealiniat" = "Comunist nealiniat",
+         "Vestic"    = "Vest \u00b7 NATO",
+         "Neutru"    = "Stat neutru",
+         bloc)
 }
 
 # ---- 5. POP-UP-uri (HTML, cu poza + 3 atribute) ----
 # Pozele sunt referentiate relativ (img/...), la fel ca pe GitHub Pages.
 
+# helper sigur: spune daca exista o cale de imagine valida (nu NA, nu gol)
+are_imagine <- function(x) {
+  x <- as.character(x)
+  isTRUE(length(x) == 1 && !is.na(x) && nzchar(trimws(x)))
+}
+
+# helper: genereaza tag-ul <img> sau "" daca nu exista imagine
+tag_imagine <- function(imagine) {
+  if (!are_imagine(imagine)) return("")
+  sprintf(
+    "<img src='%s' style='width:100%%;height:140px;object-fit:cover;display:block;border-bottom:2px solid #8a6d3b;filter:sepia(0.3) contrast(1.05);'>",
+    imagine)
+}
+
 # pop-up pentru tari (cu imagine)
 popup_tara <- function(nume, bloc, info, imagine) {
   eticheta <- eticheta_bloc(bloc)
   col <- culoare_bloc(bloc)
-  img_html <- ""
-  if (!is.na(imagine) && nzchar(imagine)) {
-    img_html <- sprintf(
-      "<img src='%s' style='width:100%%;height:140px;object-fit:cover;display:block;border-bottom:2px solid #8a6d3b;filter:sepia(0.3) contrast(1.05);'>",
-      imagine)
-  }
+  img_html <- tag_imagine(imagine)
   sprintf(
     "<div style='width:250px;font-family:Georgia,serif;'>
        %s
@@ -95,12 +104,7 @@ popup_capitala <- function(nume, bloc, info) {
 
 # pop-up pentru linia Cortinei (cu imagine)
 popup_cortina <- function(nume, perioada, lungime_km, info, imagine) {
-  img_html <- ""
-  if (!is.na(imagine) && nzchar(imagine)) {
-    img_html <- sprintf(
-      "<img src='%s' style='width:100%%;height:140px;object-fit:cover;display:block;border-bottom:2px solid #8a6d3b;filter:sepia(0.3) contrast(1.05);'>",
-      imagine)
-  }
+  img_html <- tag_imagine(imagine)
   sprintf(
     "<div style='width:260px;font-family:Georgia,serif;'>
        %s
@@ -146,12 +150,12 @@ stil_poligon <- function(df) {
 
 # ---- 6. CONSTRUIRE HARTA ----
 harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
-
+  
   # --- 3 BASEMAP-uri raster ---
   addProviderTiles("CartoDB.Voyager", group = "H\u00e2rtie de epoc\u0103") %>%
   addProviderTiles("CartoDB.DarkMatter", group = "Relief sobru") %>%
   addProviderTiles("Esri.WorldShadedRelief", group = "Relief fizic") %>%
-
+  
   # --- Strat poligoane: VEST + NEUTRU ---
   addPolygons(
     data = tari_vest,
@@ -160,7 +164,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     popup = ~popup, group = "Vest & state neutre",
     highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.7, bringToFront = TRUE)
   ) %>%
-
+  
   # --- Strat poligoane: COMUNISTE NEALINIATE ---
   addPolygons(
     data = tari_nealiniate,
@@ -169,7 +173,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     popup = ~popup, group = "Comuniste nealiniate",
     highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.78, bringToFront = TRUE)
   ) %>%
-
+  
   # --- Strat poligoane: BLOCUL DE EST ---
   addPolygons(
     data = tari_est,
@@ -178,7 +182,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     popup = ~popup, group = "Blocul de Est",
     highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.8, bringToFront = TRUE)
   ) %>%
-
+  
   # --- Strat linie: CORTINA DE FIER (aura + punctat) ---
   addPolylines(
     data = cortina, color = "#1c1410", weight = 11, opacity = 0.18,
@@ -188,7 +192,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     data = cortina, color = "#1c1410", weight = 2.6, opacity = 1,
     dashArray = "9,7", popup = ~popup, group = "Cortina de Fier"
   ) %>%
-
+  
   # --- Strat puncte: CAPITALE ---
   addCircleMarkers(
     data = capitale,
@@ -203,7 +207,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     ),
     popup = ~popup, group = "Capitale"
   ) %>%
-
+  
   # --- Control straturi (basemap + overlay selectabile) ---
   addLayersControl(
     baseGroups = c("H\u00e2rtie de epoc\u0103", "Relief sobru", "Relief fizic"),
@@ -211,7 +215,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
                       "Vest & state neutre", "Capitale", "Cortina de Fier"),
     options = layersControlOptions(collapsed = FALSE)
   ) %>%
-
+  
   # --- Legenda ---
   addLegend(
     position = "bottomleft",
@@ -221,7 +225,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     title = "Cortina de Fier<br>1945-1991",
     opacity = 0.8
   ) %>%
-
+  
   # --- Vedere initiala (centrata pe Europa) ---
   setView(lng = 16, lat = 51, zoom = 4)
 
