@@ -277,6 +277,7 @@ function(el, x) {
     \"<h2 style='margin:0 0 14px;font-size:24px;color:#2b2118;'>Despre aceast\\u0103 hart\\u0103</h2>\" +
     \"<p style='font-size:15px;line-height:1.6;margin:0 0 12px;'>Hart\\u0103 interactiv\\u0103 care reconstituie diviziunea Europei \\u00een timpul R\\u0103zboiului Rece. Statele sunt grupate dup\\u0103 apartenen\\u021ba la blocuri, iar linia punctat\\u0103 marcheaz\\u0103 traseul simbolic al Cortinei de Fier, de la Marea Baltic\\u0103 la Marea Adriatic\\u0103.</p>\" +
     \"<p style='font-size:15px;line-height:1.6;margin:0 0 12px;'>Ap\\u0103sa\\u021bi pe orice \\u021bar\\u0103, capital\\u0103 sau pe linia Cortinei pentru detalii istorice. Folosi\\u021bi panoul lateral pentru a comuta harta de baz\\u0103 \\u0219i straturile.</p>\" +
+    \"<p style='font-size:15px;line-height:1.6;margin:0 0 12px;'>Imaginile sunt ata\\u0219ate fiec\\u0103rei \\u021b\\u0103ri comuniste (Blocul de Est \\u0219i statele nealiniate) \\u0219i liniei Cortinei de Fier \\u2014 ap\\u0103sa\\u021bi pe o \\u021bar\\u0103 ro\\u0219ie sau portocalie pentru a le vedea.</p>\" +
     \"<p style='font-size:13px;font-style:italic;color:#8a6d3b;border-top:1px dotted #b39b6e;padding-top:12px;margin:0;'>Proiect Leaflet \\u00b7 Date vectoriale GeoJSON \\u00b7 Grani\\u021be conform perioadei istorice reprezentate.</p>\";
 
   overlay.appendChild(card);
