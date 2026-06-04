@@ -149,12 +149,18 @@ stil_poligon <- function(df) {
 }
 
 # ---- 6. CONSTRUIRE HARTA ----
-harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
+harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12,
+                                          zoomControl = FALSE)) %>%
   
   # --- 3 BASEMAP-uri raster ---
   addProviderTiles("CartoDB.Voyager", group = "H\u00e2rtie de epoc\u0103") %>%
   addProviderTiles("CartoDB.DarkMatter", group = "Relief sobru") %>%
   addProviderTiles("Esri.WorldShadedRelief", group = "Relief fizic") %>%
+  
+  # --- PANES: niveluri z-index, ca punctele/linia sa fie mereu deasupra tarilor ---
+  addMapPane("pane_tari",     zIndex = 410) %>%  # poligoane (jos)
+  addMapPane("pane_cortina",  zIndex = 440) %>%  # linia cortinei (mijloc)
+  addMapPane("pane_capitale", zIndex = 460) %>%  # capitale (sus)
   
   # --- Strat poligoane: VEST + NEUTRU ---
   addPolygons(
@@ -162,7 +168,8 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     fillColor = ~culoare,
     fillOpacity = 0.45, color = "#2c4654", weight = 1,
     popup = ~popup, group = "Vest & state neutre",
-    highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.7, bringToFront = TRUE)
+    options = pathOptions(pane = "pane_tari"),
+    highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.7, bringToFront = FALSE)
   ) %>%
   
   # --- Strat poligoane: COMUNISTE NEALINIATE ---
@@ -171,7 +178,8 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     fillColor = ~culoare,
     fillOpacity = 0.5, color = "#9c5d1f", weight = 1,
     popup = ~popup, group = "Comuniste nealiniate",
-    highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.78, bringToFront = TRUE)
+    options = pathOptions(pane = "pane_tari"),
+    highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.78, bringToFront = FALSE)
   ) %>%
   
   # --- Strat poligoane: BLOCUL DE EST ---
@@ -180,17 +188,20 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     fillColor = ~culoare,
     fillOpacity = 0.55, color = "#7a201c", weight = 1,
     popup = ~popup, group = "Blocul de Est",
-    highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.8, bringToFront = TRUE)
+    options = pathOptions(pane = "pane_tari"),
+    highlightOptions = highlightOptions(weight = 2.5, fillOpacity = 0.8, bringToFront = FALSE)
   ) %>%
   
   # --- Strat linie: CORTINA DE FIER (aura + punctat) ---
   addPolylines(
     data = cortina, color = "#1c1410", weight = 11, opacity = 0.18,
-    group = "Cortina de Fier"
+    group = "Cortina de Fier",
+    options = pathOptions(pane = "pane_cortina")
   ) %>%
   addPolylines(
     data = cortina, color = "#1c1410", weight = 2.6, opacity = 1,
-    dashArray = "9,7", popup = ~popup, group = "Cortina de Fier"
+    dashArray = "9,7", popup = ~popup, group = "Cortina de Fier",
+    options = pathOptions(pane = "pane_cortina")
   ) %>%
   
   # --- Strat puncte: CAPITALE ---
@@ -205,7 +216,8 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
                    "font-size" = "12px", "color" = "#2b2118",
                    "text-shadow" = "1px 1px 2px rgba(233,224,201,0.9)")
     ),
-    popup = ~popup, group = "Capitale"
+    popup = ~popup, group = "Capitale",
+    options = pathOptions(pane = "pane_capitale")
   ) %>%
   
   # --- Control straturi (basemap + overlay selectabile) ---
@@ -222,7 +234,7 @@ harta <- leaflet(options = leafletOptions(minZoom = 3, maxZoom = 12)) %>%
     colors = c("#9e2b25", "#c97b29", "#3a5a6e", "#6b7a5a", "#1c1410"),
     labels = c("Blocul de Est", "Comuniste nealiniate", "Vest (NATO)",
                "State neutre", "Traseul Cortinei"),
-    title = "Cortina de Fier<br>1945-1991",
+    title = "Legend\u0103",
     opacity = 0.8
   ) %>%
   
@@ -238,7 +250,46 @@ titlu <- tags$div(
         <div style='font-size:12px;font-style:italic;'>Europa divizat\u0103 \u00een dou\u0103 blocuri</div>
         </div>")
 )
-harta <- harta %>% addControl(titlu, position = "topright")
+harta <- harta %>% addControl(titlu, position = "topleft")
+
+# ---- 7b. BUTON INFO + MODAL "Despre aceasta harta" (ca in OpenLayers) ----
+js_info <- "
+function(el, x) {
+  // adaug controlul de zoom in dreapta-jos (stanga-sus e pentru titlu + info)
+  L.control.zoom({position:'bottomright'}).addTo(this);
+
+  // creez butonul 'i' (cerc) in coltul din dreapta sus
+  var btn = document.createElement('div');
+  btn.innerHTML = 'i';
+  btn.title = 'Despre proiect';
+  btn.style.cssText = 'position:absolute;top:90px;left:10px;z-index:1000;width:34px;height:34px;border-radius:3px;border:1.5px solid #b39b6e;background:rgba(43,33,24,0.85);color:#e9e0c9;font-family:Georgia,serif;font-style:italic;font-size:19px;line-height:32px;text-align:center;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.3);';
+  btn.onmouseover = function(){ this.style.background='#9e2b25'; this.style.borderColor='#9e2b25'; };
+  btn.onmouseout  = function(){ this.style.background='rgba(43,33,24,0.85)'; this.style.borderColor='#b39b6e'; };
+
+  // creez fundalul modal (overlay)
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:absolute;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;background:rgba(28,20,16,0.6);';
+
+  // caseta modalului
+  var card = document.createElement('div');
+  card.style.cssText = 'position:relative;width:min(520px,90%);background:#e9e0c9;border:1px solid #8a6d3b;border-radius:3px;box-shadow:0 8px 30px rgba(43,33,24,0.4);padding:30px 34px;font-family:Georgia,serif;color:#4a3c2c;';
+  card.innerHTML = \"<button style='position:absolute;top:10px;right:14px;border:none;background:none;font-size:24px;color:#8a6d3b;cursor:pointer;'>&times;</button>\" +
+    \"<h2 style='margin:0 0 14px;font-size:24px;color:#2b2118;'>Despre aceast\\u0103 hart\\u0103</h2>\" +
+    \"<p style='font-size:15px;line-height:1.6;margin:0 0 12px;'>Hart\\u0103 interactiv\\u0103 care reconstituie diviziunea Europei \\u00een timpul R\\u0103zboiului Rece. Statele sunt grupate dup\\u0103 apartenen\\u021ba la blocuri, iar linia punctat\\u0103 marcheaz\\u0103 traseul simbolic al Cortinei de Fier, de la Marea Baltic\\u0103 la Marea Adriatic\\u0103.</p>\" +
+    \"<p style='font-size:15px;line-height:1.6;margin:0 0 12px;'>Ap\\u0103sa\\u021bi pe orice \\u021bar\\u0103, capital\\u0103 sau pe linia Cortinei pentru detalii istorice. Folosi\\u021bi panoul lateral pentru a comuta harta de baz\\u0103 \\u0219i straturile.</p>\" +
+    \"<p style='font-size:13px;font-style:italic;color:#8a6d3b;border-top:1px dotted #b39b6e;padding-top:12px;margin:0;'>Proiect Leaflet \\u00b7 Date vectoriale GeoJSON \\u00b7 Grani\\u021be conform perioadei istorice reprezentate.</p>\";
+
+  overlay.appendChild(card);
+  el.appendChild(btn);
+  el.appendChild(overlay);
+
+  // logica deschidere/inchidere
+  btn.onclick = function(){ overlay.style.display = 'flex'; };
+  card.querySelector('button').onclick = function(){ overlay.style.display = 'none'; };
+  overlay.onclick = function(e){ if(e.target === overlay) overlay.style.display = 'none'; };
+}
+"
+harta <- htmlwidgets::onRender(harta, js_info)
 
 # ---- 8. AFISARE + SALVARE ----
 print(harta)  # arata harta in RStudio (Viewer)
