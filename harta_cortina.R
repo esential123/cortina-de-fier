@@ -1,6 +1,7 @@
 # ============================================================
 #  CORTINA DE FIER - harta interactiva in R (Leaflet)
 #  Proiect LPSIG - punctul 2
+#  Reproduce harta OpenLayers de la punctul 1
 # ============================================================
 
 # ---- 1. PACHETE (se instaleaza automat daca lipsesc) ----
@@ -17,6 +18,9 @@ library(htmltools)
 
 # ---- 2. SETARE FOLDER DE LUCRU ----
 # Scriptul presupune ca cele 5 fisiere .geojson sunt in ACELASI folder cu scriptul.
+# In RStudio: Session -> Set Working Directory -> To Source File Location
+# (sau decomenteaza linia urmatoare si pune calea ta)
+# setwd("C:/Users/bancu/Desktop/cortina-de-fier")
 
 # ---- 3. CITIRE DATE ----
 tari_est        <- st_read("tari_est.json", quiet = TRUE)
@@ -114,8 +118,8 @@ popup_cortina <- function(nume, perioada, lungime_km, info, imagine) {
     img_html, nume, perioada, lungime_km, info)
 }
 
-# vectori de pop-up pentru fiecare strat
-# vapply ca sa garantez un vector de caractere - evitaree eroarea cu sf
+# generez vectorii de pop-up pentru fiecare strat
+# (folosesc vapply ca sa garantez un vector de caractere - evita eroarea cu sf)
 fac_popup_tari <- function(df) {
   vapply(seq_len(nrow(df)), function(i) {
     popup_tara(df$nume[i], df$bloc[i], df$info[i], df$imagine[i])
