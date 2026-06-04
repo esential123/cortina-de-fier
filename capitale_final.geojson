@@ -1,0 +1,432 @@
+{
+  "type": "FeatureCollection",
+  "name": "capitale2",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Luxemburg",
+        "bloc": "Vestic",
+        "info": "Membru fondator NATO si CEE; in plin Vest democratic."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          6.1300028,
+          49.6116604
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Berna",
+        "bloc": "Neutru",
+        "info": "Capitala Elvetiei, stat neutru clasic, in afara ambelor blocuri."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.4669755,
+          46.9166828
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Reykjavik",
+        "bloc": "Vestic",
+        "info": "Capitala Islandei, membru fondator NATO din 1949."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -21.936546009025054,
+          64.14345946317033
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Belgrad",
+        "bloc": "Nealiniat",
+        "info": "Capitala Iugoslaviei socialiste nealiniate, condusa de Tito."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.4660448,
+          44.8205913
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Tirana",
+        "bloc": "Nealiniat",
+        "info": "Capitala Albaniei comuniste izolationiste, rupta de URSS si aliata cu China."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.818883,
+          41.3275407
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Sofia",
+        "bloc": "Estic",
+        "info": "Capitala Bulgariei, unul dintre cei mai loiali aliati ai URSS."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.3147082,
+          42.6852953
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Ankara",
+        "bloc": "Vestic",
+        "info": "Capitala Turciei, membru NATO cu granita directa cu Blocul de Est."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          32.8624458,
+          39.9291844
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Budapesta",
+        "bloc": "Estic",
+        "info": "Scena Revolutiei maghiare din 1956, inabusita de trupele sovietice."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.0813748,
+          47.5019522
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Bucuresti",
+        "bloc": "Estic",
+        "info": "Capitala Romaniei socialiste, membra a Pactului de la Varsovia."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.0980008,
+          44.4353177
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Lisabona",
+        "bloc": "Vestic",
+        "info": "Capitala Portugaliei, membru fondator NATO."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -9.1468122,
+          38.7246687
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Oslo",
+        "bloc": "Vestic",
+        "info": "Capitala Norvegiei, membru NATO cu granita la nord cu URSS."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.7480333,
+          59.9186361
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Varsovia",
+        "bloc": "Estic",
+        "info": "Capitala Poloniei; aici s-a semnat Pactul de la Varsovia in 1955."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.005346737742283,
+          52.23087197353951
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Dublin",
+        "bloc": "Neutru",
+        "info": "Capitala Irlandei, stat neutru ce nu a aderat la NATO."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -6.256979517281132,
+          53.34673124898314
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Praga",
+        "bloc": "Estic",
+        "info": "Capitala Cehoslovaciei; aici a fost reprimata Primavara de la Praga in 1968."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          14.422939486203868,
+          50.0869665373215
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Helsinki",
+        "bloc": "Neutru",
+        "info": "Capitala Finlandei neutre, sub influenta sovietica ('finlandizare')."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.932456915043964,
+          60.16380384948568
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Copenhaga",
+        "bloc": "Vestic",
+        "info": "Capitala Danemarcei, membru fondator NATO."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.5615399,
+          55.68051
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Bruxelles",
+        "bloc": "Vestic",
+        "info": "Capitala Belgiei si sediul cartierului general NATO din 1967."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.3313707,
+          50.8352629
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Madrid",
+        "bloc": "Vestic",
+        "info": "Capitala Spaniei, intrata in NATO in 1982, dupa caderea franchismului."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.6852975,
+          40.4019721
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Stockholm",
+        "bloc": "Neutru",
+        "info": "Capitala Suediei, stat neutru in afara ambelor blocuri."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          18.066300168534497,
+          59.324127204007475
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Amsterdam",
+        "bloc": "Vestic",
+        "info": "Capitala Olandei, membru fondator NATO."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          4.9146943,
+          52.3519145
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Berlin (Est)",
+        "bloc": "Estic",
+        "info": "Oras divizat de Zid din 1961, simbolul Cortinei de Fier; capitala RDG."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          13.3996028,
+          52.5237645
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Atena",
+        "bloc": "Vestic",
+        "info": "Capitala Greciei, membru NATO din 1952."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.7313752,
+          37.9852721
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Viena",
+        "bloc": "Neutru",
+        "info": "Capitala Austriei neutre, punte de legatura intre cele doua blocuri."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          16.3646931,
+          48.2019611
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Londra",
+        "bloc": "Vestic",
+        "info": "Capitala Marii Britanii, putere nucleara si membru fondator NATO."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -0.1186677,
+          51.5019406
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Moscova",
+        "bloc": "Estic",
+        "info": "Capitala URSS, centrul Blocului de Est si al Pactului de la Varsovia."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          37.613577,
+          55.75411
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Roma",
+        "bloc": "Vestic",
+        "info": "Capitala Italiei, membru fondator NATO."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          12.4813126,
+          41.8979015
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Paris",
+        "bloc": "Vestic",
+        "info": "Capitala Frantei, putere nucleara; in 1966 s-a retras din comandamentul militar NATO."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          2.352992461539213,
+          48.85809231626911
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "nume": "Bonn",
+        "bloc": "Vestic",
+        "info": "Capitala Germaniei de Vest (RFG) in timpul divizarii, 1949-1990."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.101049568050429,
+          50.73535678049435
+        ]
+      }
+    }
+  ]
+}
